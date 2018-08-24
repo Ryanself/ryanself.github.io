@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description"><meta name="keywords" content="Hexo, Gruntjs, Nodejs, Reactjs, Vuejs"><title>blog</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="http://callfiles.ueibo.com/hexo-theme-laughing/post_background.jpg"><div class="post-title"><h1 class="title">随笔</h1><ul class="meta"><li><i class="icon icon-author"></i>ryan</li><li><i class="icon icon-clock"></i>3 Minutes</li><li><i class="icon icon-calendar"></i>August 24, 2018</li></ul></div></div><div class="article-content" style="max-width:800px"><h3 id="NETLINK"><a href="#NETLINK" class="headerlink" title="NETLINK"></a>NETLINK</h3><h4 id="1-HEADER"><a href="#1-HEADER" class="headerlink" title="1. HEADER"></a>1. HEADER</h4><p>A netlink protocol is typically based on messages and consists of the netlink message header (struct nlmsghdr) plus the payload attached to it.</p>
+<pre><code>一个netlink协议的特性通常基于协议中的消息和消息头。
+</code></pre><p><img src="http://www.infradead.org/~tgr/libnl/doc/images//nlmsghdr.png" alt="Netlink message header (struct nlmsghdr)"></p>
+<h4 id="2-MESSAGE-TYPES"><a href="#2-MESSAGE-TYPES" class="headerlink" title="2. MESSAGE  TYPES"></a>2. MESSAGE  TYPES</h4><p>The type of message is primarly identified by its 16 bit message type set in the message header. The following standard message types are defined:</p>
+<pre><code>报文的类型通常由报文头部的16位报文类型数据来设置。
+</code></pre><ul>
+<li>NLMSG_NOOP - No operation, message must be discarded</li>
+<li>NLMSG_ERROR - Error message or ACK, see Error Message respectively ACKs</li>
+<li>NLMSG_DONE - End of multipart sequence, see Multipart Messages</li>
+<li>NLMSG_OVERRUN - Overrun notification (Error)</li>
+</ul>
+<p>Every netlink protocol is free to define own message types. Note that message type values &lt; NLMSG_MIN_TYPE (0x10) are reserved and may not be used.</p>
+<pre><code>所有的netlink协议都可以自由的定义报文类型。其中&lt; NLMSG_MIN_TYPE (0x10）为保留类型不可使用。
+</code></pre><p>Depending on the nature of the request, the receiver may reply to the request with another netlink message. The sequence number of a reply must match the sequence number of the request it relates to.</p>
+<p>Notifications are of informal nature and no reply is expected, therefore the sequence number is typically set to 0.</p>
+<pre><code>根据请求，接受方可能会回复不同类型的报文。回复的序列号必须与请求报文请求的序列号所对应。一些消息报文不需要回复，因此它们的序列号设置为0。
+</code></pre><p>It is common practice to use own message types to implement RPC schemas. Suppose the goal of the netlink protocol you are implementing is allow configuration of a particular network device, therefore you want to provide read/write access to various configuration options. The typical “netlink way” of doing this would be to define two message types MSG_SETCFG, MSG_GETCFG:<br>    <code>#define MSG_SETCFG      0x11</code><br>    <code>#define MSG_GETCFG      0x12</code></p>
+<pre><code>通常的做法是使用自己的消息类型来实现RPC模式。假设您要实现的netlink协议的目标是允许配置特定的网络设备，因此您希望提供对各种配置选项的读/写访问。这样做的典型“netlink方式”是定义两个消息类型MSG_SETCFG，MSG_GETCFG：
+ #define MSG_SETCFG      0x11
+ #define MSG_GETCFG      0x12
+</code></pre><h4 id="3-NETLINK-SOCKET"><a href="#3-NETLINK-SOCKET" class="headerlink" title="3. NETLINK SOCKET"></a>3. NETLINK SOCKET</h4><p>The netlink socket and all related attributes including the actual file descriptor are represented by struct nl_sock.</p>
+<pre><code>netlink套接字和所有相关属性（包括实际文件描述符）由struct nl_sock表示。
+#include &lt;netlink/socket.h&gt;
+
+struct nl_sock *nl_socket_alloc(void)
+void nl_socket_free(struct nl_sock *sk)
+</code></pre><p>The application must allocate an instance of struct nl_sock for each netlink socket it wishes to use.</p>
+<pre><code>应用程序必须为它希望使用的每个netlink套接字分配struct nl_sock的实例。
+</code></pre></div><div class="article-meta" style="max-width:800px"></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjl7q2fna0002ye43bpfli4y5" data-title="" data-url="http://yoursite.com/2018/08/24/netlink/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
+var duoshuoQuery = {short_name: siteName};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/08/24/ioctl/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/BoizZ" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="https://weibo.com/heqibang" title="Weibo" target="_blank"><i class="icon icon-weibo"></i></a></li><li><a href="https://www.segmentfault.com/u/bon" title="SegmentFault" target="_blank"><i class="icon icon-segmentfault"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small><small>, THEME BY <a href="https://github.com/BoizZ/hexo-theme-laughing" target="_blank">LAUGHING</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}</script></body></html>
